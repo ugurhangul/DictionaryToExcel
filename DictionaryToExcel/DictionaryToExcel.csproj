@@ -9,23 +9,32 @@
 
     <AssemblyVersion>1.0.1</AssemblyVersion>
     <FileVersion>1.0.1</FileVersion>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Company>Uğurhan Gül</Company>
     <Authors>Uğurhan Gül</Authors>
     <Copyright>Uğurhan Gül 2021</Copyright>
-    <PackageId>DictionaryToExcel</PackageId>
+    <PackageId>Ougha.DictionaryToExcel</PackageId>
     <Product>DictionaryToExcel</Product>
     <Title>ArrayToExcel</Title>
-    <Description>Forked from Leonid Salavatov 2020</Description>
-    <PackageTags>array excel xlsx array2excel arraytoexcel convert map mapping c# csharp</PackageTags>
+    <Description>Forked from Leonid Salavatov's ArrayToExcel</Description>
+    <PackageTags>dictionary excel xlsx dictionary2excel arraytoexcel convert map mapping c# csharp</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/mustaddon/ArrayToExcel</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mustaddon/ArrayToExcel</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ugurhangul/DictionaryToExcel</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ugurhangul/DictionaryToExcel</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <NeutralLanguage />
     <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DictionaryToExcelScheme.cs.old" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="DictionaryToExcelScheme.cs.old" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.10.0" />

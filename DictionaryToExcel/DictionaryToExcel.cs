@@ -9,16 +9,15 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Ougha
 {
-    public class DictionaryToExcelToExcel
+    public class DictionaryToExcel
     {
-        public static byte[] CreateExcel<T>(T items, Action<DictionaryToExcelScheme<T>> schemeBuilder = null)where T : Dictionary<string, string>
+        public static byte[] CreateExcel<T>(T items, Action<DictionaryToExcelScheme<T>> schemeBuilder = null) where T : List<Dictionary<string, string>>
         {
-            var scheme = new DictionaryToExcelScheme<T>();
-            schemeBuilder?.Invoke(scheme);
-            return _createExcel(items, scheme);
+        
+            return _createExcel(items);
         }
 
-        static byte[] _createExcel<T>(T items, DictionaryToExcelScheme<T> scheme) where T : Dictionary<string, string>
+        static byte[] _createExcel<T>(T items) where T : List<Dictionary<string, string>>
         {
             using (var ms = new MemoryStream())
             {
@@ -31,25 +30,31 @@ namespace Ougha
                     worksheetPart.Worksheet = new Worksheet();
 
                     var sheets = document.WorkbookPart.Workbook.AppendChild(new Sheets());
-                    sheets.Append(new Sheet()
-                    {
-                        Id = document.WorkbookPart.GetIdOfPart(worksheetPart),
-                        SheetId = 1,
-                        Name = _normSheetName(scheme.SheetName) ?? "Sheet1"
-                    });
+                    var sheet = new Sheet();
+                    sheet.Id = document.WorkbookPart.GetIdOfPart(worksheetPart);
+                    sheet.SheetId = 1;
+                    sheet.Name = $"Sheet1";
+                    sheets.Append(sheet);
 
                     _addStyles(document);
 
-                    if (scheme.Columns.Count > 0)
+                    if (items.Any())
                     {
                         var cols = worksheetPart.Worksheet.AppendChild(new Columns());
-                        cols.Append(scheme.Columns.Select(x => new Column() { Min = (uint)(x.Index + 1), Max = (uint)(x.Index + 1), Width = x.Width, CustomWidth = true, BestFit = true }));
+                        cols.Append(items.Select(x => new Column() { Min = (uint)(items.IndexOf(x) + 1), Max = (uint)(items.IndexOf(x) + 1), Width = 20, CustomWidth = true, BestFit = true }));
 
-                        var rows = _getRows(items, scheme.Columns);
+                        var rows = _getRows(items);
                         var sheetData = worksheetPart.Worksheet.AppendChild(new SheetData());
                         sheetData.Append(rows);
 
-                        worksheetPart.Worksheet.Append(new AutoFilter() { Reference = $"A1:{_getColReference(scheme.Columns.Count - 1)}{rows.Length}" });
+                        Dictionary<string, string> first = null;
+                        foreach (var item in items)
+                        {
+                            first = item;
+                            break;
+                        }
+
+                        worksheetPart.Worksheet.Append(new AutoFilter() { Reference = $"A1:{_getColReference(first.Count - 1)}{rows.Length}" });
                     }
 
                     workbookpart.Workbook.Save();
@@ -57,12 +62,7 @@ namespace Ougha
                 return ms.ToArray();
             }
         }
-
-        static string _normSheetName(string value)
-        {
-            return value?.Length > 31 ? value.Substring(0, 28) + "..." : value;
-        }
-
+        
         static void _addStyles(SpreadsheetDocument document)
         {
             var stylesPart = document.WorkbookPart.AddNewPart<WorkbookStylesPart>();
@@ -112,29 +112,61 @@ namespace Ougha
             stylesPart.Stylesheet.Save();
         }
 
-        static Row[] _getRows<T>(Dictionary<string, string> items, List<DictionaryToExcelScheme<T>.Column> columns)
+        static Row[] _getRows<T>(T items) where T : List<Dictionary<string, string>>
         {
+
+
             var rows = new List<Row>();
 
-            var headerCells = columns.Select(x => new Cell
+            if (items == null && !items.Any())
             {
-                CellReference = _getColReference(x.Index),
-                CellValue = new CellValue(x.Name),
-                DataType = CellValues.String,
-                StyleIndex = 1,
-            }).ToArray();
+                return rows.ToArray();
+            }
+
+            var headers = new List<Cell>();
+            var j = 1;
+            foreach (var item in items.FirstOrDefault())
+            {
+                headers.Add(new Cell
+                {
+                    CellReference = _getColReference(j),
+                    CellValue = new CellValue(item.Key),
+                    DataType = CellValues.String,
+                    StyleIndex = 0u,
+                });
+                j++;
+            }
+
+            var headerCells = headers.ToArray();
 
             var headerRow = new Row() { RowIndex = 1 };
             headerRow.Append(headerCells);
             rows.Add(headerRow);
 
             var i = 2;
+
             foreach (var item in items)
             {
+                var cells = new List<Cell>();
                 var row = new Row() { RowIndex = (uint)i++ };
-                var cells = columns.Select(x => _getCell(headerCells[x.Index].CellReference, item.Value)).ToArray();
+                j = 1;
+                foreach (var valueRow in item)
+                {
+                    cells.Add(new Cell
+                    {
+                        CellReference = _getColReference(j),
+                        CellValue = new CellValue(valueRow.Value),
+                        DataType = CellValues.String,
+                        StyleIndex = 1
+                    });
+                    j++;
+                }
+
+
                 row.Append(cells);
                 rows.Add(row);
+
+
             }
             return rows.ToArray();
         }
