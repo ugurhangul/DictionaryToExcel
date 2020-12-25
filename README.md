@@ -1,9 +1,9 @@
-# ArrayToExcel [![NuGet version](https://badge.fury.io/nu/ArrayToExcel.svg)](http://badge.fury.io/nu/ArrayToExcel)
+# ArrayToExcel [![NuGet version](https://badge.fury.io/nu/Ougha.DictionaryToExcel.svg)](https://badge.fury.io/nu/Ougha.DictionaryToExcel)
 Create Excel from Array
 
-### Example #1
+### Example #1 for Umbraco Properties
 
-```C# for Umbraco Properties
+```C# 
 var list = new List<Dictionary<string, string>>();
 
 foreach (var child in children.ToList())
