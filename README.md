@@ -1,5 +1,7 @@
 # Ougha.DictionaryToExcel [![NuGet version](https://badge.fury.io/nu/Ougha.DictionaryToExcel.svg)](https://badge.fury.io/nu/Ougha.DictionaryToExcel)
-Create Excel from Array
+
+Create Excel from Dictionary
+Forked from https://github.com/mustaddon/ArrayToExcel Thanks to Leonid Salavatov
 
 ### Example #1 for Umbraco Properties
 
