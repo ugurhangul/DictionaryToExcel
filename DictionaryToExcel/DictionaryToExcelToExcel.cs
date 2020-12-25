@@ -1,26 +1,24 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 
-namespace RandomSolutions
+namespace Ougha
 {
-    public class ArrayToExcel
+    public class DictionaryToExcelToExcel
     {
-        public static byte[] CreateExcel<T>(T items, Action<ArrayToExcelScheme<T>> schemeBuilder = null)where T : Dictionary<string, string>
+        public static byte[] CreateExcel<T>(T items, Action<DictionaryToExcelScheme<T>> schemeBuilder = null)where T : Dictionary<string, string>
         {
-            var scheme = new ArrayToExcelScheme<T>();
+            var scheme = new DictionaryToExcelScheme<T>();
             schemeBuilder?.Invoke(scheme);
             return _createExcel(items, scheme);
         }
 
-        static byte[] _createExcel<T>(T items, ArrayToExcelScheme<T> scheme) where T : Dictionary<string, string>
+        static byte[] _createExcel<T>(T items, DictionaryToExcelScheme<T> scheme) where T : Dictionary<string, string>
         {
             using (var ms = new MemoryStream())
             {
@@ -114,7 +112,7 @@ namespace RandomSolutions
             stylesPart.Stylesheet.Save();
         }
 
-        static Row[] _getRows<T>(Dictionary<string, string> items, List<ArrayToExcelScheme<T>.Column> columns)
+        static Row[] _getRows<T>(Dictionary<string, string> items, List<DictionaryToExcelScheme<T>.Column> columns)
         {
             var rows = new List<Row>();
 

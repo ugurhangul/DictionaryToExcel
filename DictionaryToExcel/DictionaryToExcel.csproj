@@ -2,21 +2,21 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <AssemblyName>RandomSolutions.ArrayToExcel</AssemblyName>
-    <RootNamespace>RandomSolutions</RootNamespace>
+    <AssemblyName>Ougha.DictionaryToExcel</AssemblyName>
+    <RootNamespace>Ougha</RootNamespace>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>key.pfx</AssemblyOriginatorKeyFile>
 
     <AssemblyVersion>1.0.1</AssemblyVersion>
     <FileVersion>1.0.1</FileVersion>
-    <Version>1.0.1</Version>
-    <Company></Company>
-    <Authors>Leonid Salavatov</Authors>
-    <Copyright>Leonid Salavatov 2020</Copyright>
-    <PackageId>ArrayToExcel</PackageId>
-    <Product>ArrayToExcel</Product>
+    <Version>1.0.0</Version>
+    <Company>Uğurhan Gül</Company>
+    <Authors>Uğurhan Gül</Authors>
+    <Copyright>Uğurhan Gül 2021</Copyright>
+    <PackageId>DictionaryToExcel</PackageId>
+    <Product>DictionaryToExcel</Product>
     <Title>ArrayToExcel</Title>
-    <Description>Create Excel from Array</Description>
+    <Description>Forked from Leonid Salavatov 2020</Description>
     <PackageTags>array excel xlsx array2excel arraytoexcel convert map mapping c# csharp</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/mustaddon/ArrayToExcel</PackageProjectUrl>

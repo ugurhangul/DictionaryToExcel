@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace RandomSolutions
+namespace Ougha
 {
-    public class ArrayToExcelScheme<T>
+    public class DictionaryToExcelScheme<T>
     {
         //internal ArrayToExcelScheme()
         //{
@@ -15,7 +11,7 @@ namespace RandomSolutions
 
         public string SheetName;
 
-        public ArrayToExcelScheme<T> AddColumn(string name, string value, uint width = _defaultWidth)
+        public DictionaryToExcelScheme<T> AddColumn(string name, string value, uint width = _defaultWidth)
         {
             (_columns ?? (_columns = new List<Column>())).Add(new Column
             {
