@@ -1,4 +1,4 @@
-# ArrayToExcel [![NuGet version](https://badge.fury.io/nu/Ougha.DictionaryToExcel.svg)](https://badge.fury.io/nu/Ougha.DictionaryToExcel)
+# Ougha.DictionaryToExcel [![NuGet version](https://badge.fury.io/nu/Ougha.DictionaryToExcel.svg)](https://badge.fury.io/nu/Ougha.DictionaryToExcel)
 Create Excel from Array
 
 ### Example #1 for Umbraco Properties
