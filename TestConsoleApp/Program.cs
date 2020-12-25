@@ -31,17 +31,10 @@ namespace TestConsoleApp
 
         static void Example2()
         {
-            var items = Enumerable.Range(1, 10).Select(x => new
-            {
-                Prop1 = $"Text #{x}",
-                Prop2 = x * 1000,
-                Prop3 = DateTime.Now.AddDays(-x),
-            });
+            var items = new Dictionary<string,string>();
+            items.Add("key","val");
 
-            var excel = items.ToExcel(scheme => scheme
-                .AddColumn("MyColumnName#1", x => x.Prop1)
-                .AddColumn("MyColumnName#2", x => $"test:{x.Prop2}")
-                .AddColumn("MyColumnName#3", x => x.Prop3));
+            var excel = items.ToExcel()
 
             File.WriteAllBytes(@"..\..\..\..\Examples\example2.xlsx", excel);
         }

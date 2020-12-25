@@ -8,7 +8,7 @@ namespace RandomSolutions
 {
     public static class ArrayToExcelExtensions
     {
-        public static byte[] ToExcel<T>(this IEnumerable<T> items, string sheetName = null)
+        public static byte[] ToExcel<T>(this T items, string sheetName = null) where T : Dictionary<string, string>
         {
             return ArrayToExcel.CreateExcel(items, scheme =>
             {
@@ -16,7 +16,7 @@ namespace RandomSolutions
             });
         }
 
-        public static byte[] ToExcel<T>(this IEnumerable<T> items, Action<ArrayToExcelScheme<T>> schemeBuilder)
+        public static byte[] ToExcel<T>(this T items, Action<ArrayToExcelScheme<T>> schemeBuilder)where T : Dictionary<string, string>
         {
             return ArrayToExcel.CreateExcel(items, schemeBuilder);
         }

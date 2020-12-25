@@ -13,14 +13,14 @@ namespace RandomSolutions
 {
     public class ArrayToExcel
     {
-        public static byte[] CreateExcel<T>(IEnumerable<T> items, Action<ArrayToExcelScheme<T>> schemeBuilder = null)
+        public static byte[] CreateExcel<T>(T items, Action<ArrayToExcelScheme<T>> schemeBuilder = null)where T : Dictionary<string, string>
         {
             var scheme = new ArrayToExcelScheme<T>();
             schemeBuilder?.Invoke(scheme);
             return _createExcel(items, scheme);
         }
 
-        static byte[] _createExcel<T>(IEnumerable<T> items, ArrayToExcelScheme<T> scheme)
+        static byte[] _createExcel<T>(T items, ArrayToExcelScheme<T> scheme) where T : Dictionary<string, string>
         {
             using (var ms = new MemoryStream())
             {
@@ -114,7 +114,7 @@ namespace RandomSolutions
             stylesPart.Stylesheet.Save();
         }
 
-        static Row[] _getRows<T>(IEnumerable<T> items, List<ArrayToExcelScheme<T>.Column> columns)
+        static Row[] _getRows<T>(Dictionary<string, string> items, List<ArrayToExcelScheme<T>.Column> columns)
         {
             var rows = new List<Row>();
 
@@ -134,7 +134,7 @@ namespace RandomSolutions
             foreach (var item in items)
             {
                 var row = new Row() { RowIndex = (uint)i++ };
-                var cells = columns.Select(x => _getCell(headerCells[x.Index].CellReference, x.ValueFn(item))).ToArray();
+                var cells = columns.Select(x => _getCell(headerCells[x.Index].CellReference, item.Value)).ToArray();
                 row.Append(cells);
                 rows.Add(row);
             }
