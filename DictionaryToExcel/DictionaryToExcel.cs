@@ -6,18 +6,26 @@ using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Ougha.Entities;
 
 namespace Ougha
 {
     public class DictionaryToExcel
     {
-        public static byte[] CreateExcel<T>(T items, Action<DictionaryToExcelScheme<T>> schemeBuilder = null) where T : List<Dictionary<string, string>>
+        public static byte[] CreateExcel(List<Dictionary<string, string>> items)
         {
         
             return _createExcel(items);
         }
+        public static byte[] CreateExcel<T>(T items) where T : List<TabSheet>
+        {
 
-        static byte[] _createExcel<T>(T items) where T : List<Dictionary<string, string>>
+            return _createExcel(items);
+        }
+
+
+        [Obsolete]
+        static byte[] _createExcel(List<Dictionary<string, string>> items)
         {
             using (var ms = new MemoryStream())
             {
@@ -62,7 +70,60 @@ namespace Ougha
                 return ms.ToArray();
             }
         }
-        
+        static byte[] _createExcel<T>(T items) where T : List<TabSheet>
+        {
+            using (var ms = new MemoryStream())
+            {
+                using (var document = SpreadsheetDocument.Create(ms, SpreadsheetDocumentType.Workbook))
+                {
+                    var workbookpart = document.AddWorkbookPart();
+                    workbookpart.Workbook = new Workbook();
+                    var sheets = document.WorkbookPart.Workbook.AppendChild(new Sheets());
+                    _addSheets(sheets, workbookpart, document,items);
+                    workbookpart.Workbook.Save();
+                }
+                return ms.ToArray();
+            }
+        }
+        static void _addSheets(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument document, List<TabSheet> tabSheets = null)
+        {
+            if (tabSheets != null)
+            {
+                foreach (var tab in tabSheets)
+                {
+                    var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+                    worksheetPart.Worksheet = new Worksheet();
+
+                    var sheet = new Sheet();
+                    sheet.Id = document.WorkbookPart.GetIdOfPart(worksheetPart);
+                    UInt32 sheetId = (UInt32)tabSheets.IndexOf(tab) + 2;
+                    sheet.SheetId = sheetId;
+                    sheet.Name = tab.Name;
+                    sheets.Append(sheet);
+
+                    //_addStyles(document);
+
+                    if (tab.Properties.Any())
+                    {
+                        var cols = worksheetPart.Worksheet.AppendChild(new Columns());
+                        cols.Append(tab.Properties.Select(x => new Column() { Min = (uint)(tab.Properties.IndexOf(x) + 1), Max = (uint)(tab.Properties.IndexOf(x) + 1), Width = 20, CustomWidth = true, BestFit = true }));
+
+                        var rows = _getRows(tab.Properties);
+                        var sheetData = worksheetPart.Worksheet.AppendChild(new SheetData());
+                        sheetData.Append(rows);
+
+                        Dictionary<string, string> first = null;
+                        foreach (var item in tab.Properties)
+                        {
+                            first = item;
+                            break;
+                        }
+
+                        worksheetPart.Worksheet.Append(new AutoFilter() { Reference = $"A1:{_getColReference(first.Count - 1)}{rows.Length}" });
+                    }
+                }
+            }
+        }
         static void _addStyles(SpreadsheetDocument document)
         {
             var stylesPart = document.WorkbookPart.AddNewPart<WorkbookStylesPart>();

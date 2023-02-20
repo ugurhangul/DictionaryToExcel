@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <AssemblyName>Ougha.DictionaryToExcel</AssemblyName>
     <RootNamespace>Ougha</RootNamespace>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>key.pfx</AssemblyOriginatorKeyFile>
 
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion>
-    <Version>1.0.1</Version>
+    <AssemblyVersion>1.1.1</AssemblyVersion>
+    <FileVersion>1.1.1</FileVersion>
+    <Version>1.1.1</Version>
     <Company>Uğurhan Gül</Company>
-    <Authors>Uğurhan Gül</Authors>
-    <Copyright>Uğurhan Gül 2021</Copyright>
+    <Authors>Uğurhan Gül - Berk Cinaz</Authors>
+    <Copyright>Uğurhan Gül 2023</Copyright>
     <PackageId>Ougha.DictionaryToExcel</PackageId>
     <Product>DictionaryToExcel</Product>
     <Title>ArrayToExcel</Title>
@@ -27,14 +27,6 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="DictionaryToExcelScheme.cs.old" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="DictionaryToExcelScheme.cs.old" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.0" />

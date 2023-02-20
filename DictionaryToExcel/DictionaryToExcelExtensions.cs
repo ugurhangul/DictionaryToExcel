@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Ougha.Entities;
 using System.Collections.Generic;
 
 namespace Ougha
@@ -7,16 +7,11 @@ namespace Ougha
     {
         public static byte[] ToExcel<T>(this T items, string sheetName = null) where T : List<Dictionary<string, string>>
         {
-            return DictionaryToExcel.CreateExcel(items, scheme =>
-            {
-                scheme.SheetName = sheetName;
-            });
+            return DictionaryToExcel.CreateExcel(items);
         }
-
-        public static byte[] ToExcel<T>(this T items, Action<DictionaryToExcelScheme<T>> schemeBuilder) where T : List<Dictionary<string, string>>
+        public static byte[] ToExcel<T>(this T items) where T : List<TabSheet>
         {
-            return DictionaryToExcel.CreateExcel(items, schemeBuilder);
+            return DictionaryToExcel.CreateExcel(items);
         }
-
     }
 }
